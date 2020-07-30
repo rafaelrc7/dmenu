@@ -1021,6 +1021,13 @@ readxresources(void) {
 			colors[SchemeSel][ColFg] = strdup(xval.addr);
 		else
 			colors[SchemeSel][ColFg] = strdup(colors[SchemeSel][ColFg]);
+		if (XrmGetResource(xdb, "dmenu.alpha", "*", &type, &xval)){
+			for(int i = 0; i < LENGTH(alphas); i++)
+				alphas[i][1] = strtof( strdup(xval.addr), NULL ) * OPAQUE;
+		} else if (XrmGetResource(xdb, "*.alpha", "*", &type, &xval)){
+			for(int i = 0; i < LENGTH(alphas); i++)
+				alphas[i][1] = strtof( strdup(xval.addr), NULL ) * OPAQUE;
+		}
 
 		XrmDestroyDatabase(xdb);
 	}
